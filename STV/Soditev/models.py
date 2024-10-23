@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from datetime import timedelta
+from django.utils import timezone
+
 
 # Modèle pour les personnes (Clients et Gérant)
 class Personne(models.Model):
@@ -91,7 +93,6 @@ class Promotion(models.Model):
 
     def est_active(self):
         """Vérifie si la promotion est active à la date actuelle."""
-        from django.utils import timezone
         today = timezone.now().date()
         return self.date_debut <= today <= self.date_fin
 
