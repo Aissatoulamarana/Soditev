@@ -9,6 +9,7 @@ class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank= True)
     adresse = models.CharField(max_length=60, default=None)
     telephone = models.CharField(max_length=15, default=None)
+    
     def __str__(self):
         return f"Client: {self.user.username}"
 
@@ -51,8 +52,8 @@ class Technicien(models.Model):
 # Modèle Stock géré par un Commerciaux
 class Stock(models.Model):
     gerant = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank= True)
-    adresse = models.CharField(max_length=60, default=None)
-    telephone = models.CharField(max_length=15, default=None)
+    adresse = models.CharField(max_length=60, default=None , null=True, blank= True)
+    telephone = models.CharField(max_length=15, default=None, null=True, blank= True)
 
     def __str__(self):
         return f"Stock géré par {self.gerant.username}"
