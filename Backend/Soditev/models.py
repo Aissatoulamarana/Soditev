@@ -154,14 +154,14 @@ class Souscription(models.Model):
 # Modèle Caisse
 class Caisse(models.Model):
     caissier = models.OneToOneField(User, on_delete=models.CASCADE)
-    compte = models.DecimalField(max_digits=12, decimal_places=2)
+    compte = models.DecimalField(max_digits=12, decimal_places=2,default=0.00,blank=True, null=True)
     commercant = models.ForeignKey(Commerciaux, on_delete=models.SET_NULL, blank=True, null=True)
     date_transaction = models.DateTimeField(auto_now_add=True)
     description = models.CharField(max_length=255, blank=True, null=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, blank=True, null=True)
+   
 
     def __str__(self):
-        return f"Transaction par {self.caissier.user.username} - Compte: {self.compte}"
+        return f"Transaction par {self.caissier.username} - Compte: {self.compte}"
 
 # Modèle Notification
 class Notification(models.Model):
