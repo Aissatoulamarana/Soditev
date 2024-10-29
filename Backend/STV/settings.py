@@ -15,6 +15,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -27,6 +28,7 @@ SECRET_KEY = 'django-insecure-#+lcb%^osm8mvk@+&xwre#dgcx2=l%z0xh1#svahf)aygf$$v-
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -71,10 +73,13 @@ CORS_ALLOWED_ORIGINS = [
 
 ROOT_URLCONF = 'STV.urls'
 
+#Route pour acceder aux templates 
+TEMPLATE_DIR = os.path.join('..', 'Frontend', 'soditev', 'build')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR],# appel de la route pour indiquer a django ou se trouve les templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,8 +140,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-
+#Configuration des fichiers statics
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join('..', 'Frontend', 'soditev', 'build', 'static'),
+]
 
 
 MEDIA_URL = '/media/'

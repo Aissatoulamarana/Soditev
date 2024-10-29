@@ -7,10 +7,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
-
-
-
-
+from django.views.generic import TemplateView
 from .serializers import ClientLoginSerializer, ClientSerializer, StockLoginSerializer,  TechnicienLoginSerializer, TechnicienSerializer
 
 class InscriptionTechnicienView(generics.CreateAPIView):
@@ -66,22 +63,50 @@ class ClientRegistrationView(GenericAPIView):
     
 class ClientLoginView(GenericAPIView):
     serializer_class = ClientLoginSerializer
+
     def post(self, request):
-        serializer = ClientLoginSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
+
+        username = serializer.validated_data['username']
+        password = serializer.validated_data['password']
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            # Vérifie que l'utilisateur est un client
+            if hasattr(user, 'client'):  # Assurez-vous que l'utilisateur a un attribut 'client'
+                token, created = Token.objects.get_or_create(user=user)
+                return Response({"token": token.key}, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "Vous n'êtes pas un client"}, status=status.HTTP_403_FORBIDDEN)
         
-        # Générer ou récupérer le token pour l'utilisateur
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key}, status=status.HTTP_200_OK)
+        return Response({"error": "Nom d'utilisateur ou mot de passe incorrect"}, status=status.HTTP_401_UNAUTHORIZED)
     
 class StockLoginView(GenericAPIView):
     serializer_class = StockLoginSerializer
+
     def post(self, request):
-        serializer = StockLoginSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        
-        # Générer ou récupérer le token pour l'utilisateur
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key}, status=status.HTTP_200_OK)
+
+        # Authentification de l'utilisateur
+        username = serializer.validated_data['username']
+        password = serializer.validated_data['password']
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            # Vérifie que l'utilisateur est un membre du stock
+            if hasattr(user, 'stock'):  # Assurez-vous que l'utilisateur a un attribut 'stock'
+                # Générer ou récupérer le token pour l'utilisateur
+                token, created = Token.objects.get_or_create(user=user)
+                return Response({"token": token.key}, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "Vous n'êtes pas un membre du stock"}, status=status.HTTP_403_FORBIDDEN)
+
+        return Response({"error": "Nom d'utilisateur ou mot de passe incorrect"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+
+#Vue pour afficher la page principale
+def HomeView(request):
+    return render(request, 'index.html')# Fichier HTML principal généré par React
