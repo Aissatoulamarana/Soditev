@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.urls import path
 from . views import ClientLoginView, ClientRegistrationView, InscriptionTechnicienView, StockLoginView, TechnicienLoginView
 from . import views
@@ -12,3 +13,13 @@ urlpatterns = [
     path('', views.HomeView, name='home'),  # Page d'accueil
 
 ]
+=======
+
+from django.urls import path
+from .views import CommerciauxLoginView, LoginCaissierView, RegistrationView
+urlpatterns = [
+ path('register/', RegistrationView.as_view(), name='register'),
+ path('login/', CommerciauxLoginView.as_view(), name='login'),
+ path('loginCaissier/', LoginCaissierView.as_view(), name='loginCaissier'),
+]
+>>>>>>> 5e33cfa13ec5c338bff29d8e39dfa9769fe02fc3
