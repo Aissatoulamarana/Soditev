@@ -7,7 +7,7 @@ from django.contrib.auth.password_validation import validate_password
 # Register your models here.
 from .models import Caisse, Client,   Stock, Technicien
 
-<<<<<<< HEAD
+
 admin.site.register(Caisse)
 
 
@@ -91,48 +91,11 @@ class StockAdmin(admin.ModelAdmin):
     form = StockAdminForm
     list_display = ('gerant', )
     search_fields = ('gerant__username', )
-=======
+
 
 admin.site.register(Stock)
 
-#create caisse
 
-# admin.py
-from django.contrib import admin
-from .models import Caisse
-from django import forms
-
-# admin.py
-from django.contrib import admin
-from .models import Caisse
-from django import forms
-from django.contrib.auth.models import User
-
-# admin.py
-from django.contrib import admin
-from .models import Caisse
-from django import forms
-from django.contrib.auth.models import User
-
-# admin.py
-from django.contrib import admin
-from .models import Caisse
-from django import forms
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-import re
-
-# admin.py
-from django.contrib import admin
-from .models import Caisse
-from django import forms
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-import re
-
-from django import forms
-from django.contrib.auth.models import User
-from .models import Caisse
 
 #creation d'un caissier
 class CaisseForm(forms.ModelForm):
@@ -159,8 +122,7 @@ class CaisseForm(forms.ModelForm):
             caisse.save()
         return caisse
 
-from django.contrib import admin
-from .models import Caisse
+
 
 
 @admin.register(Caisse)
@@ -168,4 +130,4 @@ class CaisseAdmin(admin.ModelAdmin):
     form = CaisseForm
     list_display = ('caissier','compte')  # Ajoutez une virgule pour indiquer que c'est un tuple
     search_fields = ('caissier__username',)  # Ajoutez une virgule pour indiquer que c'est un tuple
->>>>>>> 5e33cfa13ec5c338bff29d8e39dfa9769fe02fc3
+

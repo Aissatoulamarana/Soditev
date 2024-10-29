@@ -1,71 +1,37 @@
-<<<<<<< HEAD
+
 import re
 import phonenumbers
 from rest_framework import serializers
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.response import Response
 from .models import Client, Stock, Technicien
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
-from rest_framework.exceptions import AuthenticationFailed
-
-
-def indicatif():
-=======
-#Fichier serializer
-
-from rest_framework import generics, permissions,serializers
 from .models import Commerciaux
 
-from django.contrib.auth.hashers import make_password
-
-
-from django.contrib.auth.models import UserManager
-
-from django.contrib.auth.models import User
-
-import re
-from rest_framework import serializers
-from django.contrib.auth.models import User
-
-from rest_framework.authtoken.models import Token
 
 
 
 
-from rest_framework import serializers
-from django.contrib.auth.models import User
 
-from django_countries.fields import CountryField
-from django_countries.serializers import CountryFieldMixin
-
-
-
-import phonenumbers
-from rest_framework import serializers
-from django.contrib.auth.models import User
-from .models import Commerciaux
-from django.contrib.auth import authenticate
-
-from django.contrib import admin
 from .models import Caisse
 
 # Fonction pour récupérer les indicatifs téléphoniques
 def obtenir_indicatifs_telephoniques():
->>>>>>> 5e33cfa13ec5c338bff29d8e39dfa9769fe02fc3
+
     indicatifs = {}
     for region_code in phonenumbers.SUPPORTED_REGIONS:
         indicatif = phonenumbers.country_code_for_region(region_code)
         if indicatif:
-<<<<<<< HEAD
+
             indicatifs[f'+{indicatif}'] = phonenumbers.region_code_for_country_code(indicatif)
     return [(key , f"{key} ({value})") for key , value in indicatifs.items()]
 class TechnicienSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', required=True)
     password = serializers.CharField(write_only=True)
     email = serializers.CharField(source = 'user.email', required = True)
-    indicatif_telephone = serializers.ChoiceField(choices = indicatif(), required = True, write_only = True) 
+    indicatif_telephone = serializers.ChoiceField(choices = obtenir_indicatifs_telephoniques(), required = True, write_only = True) 
     telephone = serializers.CharField(required = True)
 
     class Meta:
@@ -213,9 +179,9 @@ class StockLoginSerializer(serializers.Serializer):
 
         data['user'] = user
         return data
-=======
-            indicatifs[f"+{indicatif}"] = phonenumbers.region_code_for_country_code(indicatif)
-    return [(key, f"{key} ({value})") for key, value in indicatifs.items()]
+
+        indicatifs[f"+{indicatif}"] = phonenumbers.region_code_for_country_code(indicatif)
+        return [(key, f"{key} ({value})") for key, value in indicatifs.items()]
 
 class CommerciauxSerializer(serializers.ModelSerializer): 
     username = serializers.CharField(source='user.username', required=True)
@@ -299,4 +265,3 @@ class LoginCaissierSerializer(serializers.Serializer):
 
 
 
->>>>>>> 5e33cfa13ec5c338bff29d8e39dfa9769fe02fc3

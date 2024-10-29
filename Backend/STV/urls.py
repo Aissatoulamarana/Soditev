@@ -22,10 +22,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-<<<<<<< HEAD
-    path ('',include("Soditev.urls"))
-=======
+
     path('',include('Soditev.urls')),
->>>>>>> 5e33cfa13ec5c338bff29d8e39dfa9769fe02fc3
+
 ]+static (settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
 
