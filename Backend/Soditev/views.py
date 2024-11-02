@@ -9,6 +9,8 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
+
+from .models import Technicien
 from .serializers import ClientLoginSerializer, ClientSerializer, CommerciauxLoginSerializer, CommerciauxSerializer, LoginCaissierSerializer, StockLoginSerializer,  TechnicienLoginSerializer, TechnicienSerializer
 
 class InscriptionTechnicienView(generics.CreateAPIView):
@@ -210,3 +212,9 @@ class LoginCaissierView(GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+#Vue pour la liste de tous les tehniciens 
+class TechnicienList(APIView):
+    def get(self, request):
+        techniciens = Technicien.objects.all()
+        serializer = TechnicienSerializer(techniciens, many=True)
+        return Response(serializer.data)

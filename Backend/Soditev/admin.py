@@ -8,7 +8,7 @@ from django.contrib.auth.password_validation import validate_password
 from .models import Caisse, Client,   Stock, Technicien
 
 
-admin.site.register(Caisse)
+
 
 
 class TechnicienAdmin(admin.ModelAdmin):
@@ -93,7 +93,7 @@ class StockAdmin(admin.ModelAdmin):
     search_fields = ('gerant__username', )
 
 
-admin.site.register(Stock)
+
 
 
 

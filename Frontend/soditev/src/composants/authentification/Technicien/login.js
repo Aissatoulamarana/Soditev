@@ -1,9 +1,12 @@
+// LoginForm.js
 import React, { useState } from 'react';
 import authService from '../../../services/authentification/technicien/login';
 import technicienService from '../../../services/authentification/technicien/register';
 import '../../../styles/login.css';
+import { useNavigate, Link } from 'react-router-dom';
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -25,7 +28,7 @@ const LoginForm = () => {
 
     try {
       await authService.technicienLogin(username, password);
-      // Rediriger ou effectuer d'autres actions après une connexion réussie
+      navigate("/home");
     } catch (err) {
       setError(err.message);
     }
@@ -60,7 +63,7 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="input-field"
           />
-          <a href="#">Mot de passe oublié ?</a>
+           <Link to="/forgot-password" className="forgot-password">Mot de passe oublié ?</Link>
           <button type="submit" className="btn">Se connecter</button>
           {error && <p className="error">{error}</p>}
         </form>
@@ -95,17 +98,8 @@ const InscriptionTechnicien = () => {
     setFormData({ ...formData, photo: e.target.files[0] });
   };
 
-  const handleNextStep = () => {
-    if (step < 3) {
-      setStep(step + 1);
-    }
-  };
-
-  const handlePrevStep = () => {
-    if (step > 1) {
-      setStep(step - 1);
-    }
-  };
+  const handleNextStep = () => setStep((prevStep) => prevStep + 1);
+  const handlePrevStep = () => setStep((prevStep) => prevStep - 1);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -128,12 +122,12 @@ const InscriptionTechnicien = () => {
   return (
     <form onSubmit={handleSubmit} className="inscription-form">
       <h1>S'inscrire</h1>
-      <div className="step-indicator">
-        <div className={`step ${step === 1 ? 'active' : ''}`}>Étape 1</div>
-        <div className={`step ${step === 2 ? 'active' : ''}`}>Étape 2</div>
-        <div className={`step ${step === 3 ? 'active' : ''}`}>Étape 3</div>
-      </div>
-
+          <div className="social-container">
+            <a href="#" className="social"><i className="fab fa-facebook-f"></i></a>
+            <a href="#" className="social"><i className="fab fa-google-plus-g"></i></a>
+            <a href="#" className="social"><i className="fab fa-linkedin-in"></i></a>
+          </div>
+          <span>ou créez votre compte</span>
       {step === 1 && (
         <div className="step-content">
           <input type="text" name="username" placeholder="Nom" value={formData.username} onChange={handleChange} required className="input-field" />
@@ -141,35 +135,44 @@ const InscriptionTechnicien = () => {
           <button type="button" className="btn" onClick={handleNextStep}>Suivant</button>
         </div>
       )}
-
       {step === 2 && (
         <div className="step-content">
           <input type="password" name="password" placeholder="Mot de passe" value={formData.password} onChange={handleChange} required className="input-field" />
           <input type="text" name="adresse" placeholder="Adresse" value={formData.adresse} onChange={handleChange} required className="input-field" />
+          <div className='button-container'>
           <button type="button" className="btn" onClick={handlePrevStep}>Précédent</button>
           <button type="button" className="btn" onClick={handleNextStep}>Suivant</button>
+          </div>
         </div>
       )}
-
       {step === 3 && (
         <div className="step-content">
           <div className="phone-input">
-            <select name="indicatif_telephone" value={formData.indicatif_telephone} onChange={handleChange} required className="input-field">
-              <option value="">Choisissez un indicatif</option>
-              <option value="+33">+33 (France)</option>
-              <option value="+221">+221 (Sénégal)</option>
+            <select name="indicatif_telephone" value={formData.indicatif_telephone} onChange={handleChange} required className="input-field phone-select">
+              <option value="">Indicatif</option>
+              <option value="+33">+33</option>
+              <option value="+221">+221</option>
             </select>
-            <input type="text" name="telephone" placeholder="Téléphone" value={formData.telephone} onChange={handleChange} required className="input-field" />
+            <input type="text" name="telephone" placeholder="Téléphone" value={formData.telephone} onChange={handleChange} required className="input-field phone-number" />
           </div>
-          <div className="photo-upload">
-            <input type="file" name="photo" id="photo" onChange={handleFileChange} required />
-            {formData.photo && <img src={URL.createObjectURL(formData.photo)} alt="Sélectionnée" className="photo-preview" />}
-          </div>
+          <div className='button-container'>
           <button type="button" className="btn" onClick={handlePrevStep}>Précédent</button>
-          <button type="submit" className="btn">S'inscrire</button>
+          <button type="button" className="btn" onClick={handleNextStep}>Suivant</button>
+          </div>
         </div>
       )}
-
+      {step === 4 && (
+        <div className="step-content">
+          <div className="photo-upload">
+            <input type="file" name="photo" id="photo" onChange={handleFileChange} required />
+            {formData.photo && <img src={URL.createObjectURL(formData.photo)} alt="Prévisualisation" className="photo-preview" />}
+          </div>
+          <div className='button-container'>
+          <button type="button" id='prev' className="btn" onClick={handlePrevStep}>Précédent</button>
+          <button type="submit" className="btn">S'inscrire</button>
+          </div>
+        </div>
+      )}
       {error && <p className="error">{error}</p>}
       {success && <p className="success">Inscription réussie !</p>}
     </form>
@@ -181,12 +184,12 @@ const Overlay = ({ onSignInClick, onSignUpClick }) => (
     <div className="overlay">
       <div className="overlay-panel overlay-left">
         <h1>Bienvenue de retour !</h1>
-        <p>Pour rester connecté avec nous, veuillez vous connecter avec vos informations personnelles</p>
+        <p>Pour rester connecté, connectez-vous avec vos informations personnelles</p>
         <button className="ghost" onClick={onSignInClick}>Se connecter</button>
       </div>
       <div className="overlay-panel overlay-right">
-        <h1>Bonjour, ami !</h1>
-        <p>Entrez vos informations personnelles et commencez votre voyage avec nous</p>
+        <h1>Bonjour !</h1>
+        <p>Entrez vos informations personnelles et commencez votre aventure avec nous</p>
         <button className="ghost" onClick={onSignUpClick}>S'inscrire</button>
       </div>
     </div>

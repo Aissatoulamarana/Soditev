@@ -1,6 +1,6 @@
 
 from django.urls import path
-from . views import ClientLoginView, ClientRegistrationView, CommerciauxLoginView, InscriptionTechnicienView, LoginCaissierView, RegistrationView, StockLoginView, TechnicienLoginView
+from . views import ClientLoginView, ClientRegistrationView, CommerciauxLoginView, InscriptionTechnicienView, LoginCaissierView, RegistrationView, StockLoginView, TechnicienList, TechnicienLoginView
 from . import views
 
 
@@ -14,6 +14,7 @@ urlpatterns = [
     path('register/', RegistrationView.as_view(), name='register'),
     path('login/', CommerciauxLoginView.as_view(), name='login'),
     path('loginCaissier/', LoginCaissierView.as_view(), name='loginCaissier'),
+    path('api/techniciens/', TechnicienList.as_view(), name='technicien-list'),
 
 
 ]

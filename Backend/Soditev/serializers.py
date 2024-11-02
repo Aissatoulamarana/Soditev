@@ -245,11 +245,9 @@ class CommerciauxSerializer(serializers.ModelSerializer):
 class CommerciauxLoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
+ 
         
 #connexion des caissiers 
-
-
-
 class LoginCaissierSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
     password = serializers.CharField(required=True, write_only=True)
@@ -263,5 +261,10 @@ class LoginCaissierSerializer(serializers.Serializer):
 
 
 
+class TechnicienSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
 
+    class Meta:
+        model = Technicien
+        fields = ['id', 'username', 'adresse', 'telephone', 'photo', 'statut', 'disponibilite']
 

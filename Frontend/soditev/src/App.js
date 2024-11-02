@@ -1,16 +1,29 @@
 import React from 'react';
-//import InscriptionTechnicien from './composants/authentification/Technicien/register'; // Assurez-vous que le chemin est correct
-import LoginForm from './composants/authentification/Technicien/login';
+import AdminDashboard from './composants/authentification/Technicien/dashboard';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ListeTechniciens from './composants/authentification/Technicien/list';
+//import LoginForm from './composants/authentification/Technicien/login';
 
-function App() {
+
+const App = () => {
     return (
-        <div className="App">
-            
-            
-            <LoginForm/>
-           
         
-        </div> 
+            
+            <Router>
+                <div className="App">
+            <Routes>
+                {/* Route par défaut pour afficher LoginForm */}
+                
+                {/* Route pour le tableau de bord */}
+                <Route path="/home" element={<AdminDashboard/>} /> {/* Page d'accueil */}
+                <Route path="/techniciens" element={<ListeTechniciens/>} /> {/* Route vers ListeTechniciens */}
+                {/* Route pour les pages non trouvées */}
+                <Route path="*" element={<h1>404 - Page non trouvée</h1>} />
+            </Routes>
+            </div> 
+        </Router>
+        
+        
     );
 }
 
